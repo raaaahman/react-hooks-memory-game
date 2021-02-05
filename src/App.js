@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import Card from './Card'
 import elephantImg from './assets/elephant.png'
 import giraffeImg from './assets/giraffe.png'
@@ -24,12 +26,28 @@ const images = [
 ]
 
 function App() {
-  const pairedImages = images.concat(images)
-  const shuffledImages = pairedImages.sort(() => Math.random() - 0.5)
+  const cardsData = images.map((image, index) => ({image, isFlipped: false}))
+  const pairedCards = cardsData.concat(cardsData)
+  const shuffledCards = pairedCards.sort(() => Math.random() - 0.5)
+
+  const [ cardsState, setCardsState ] = useState(shuffledCards)
+
+  function flipCard(index) {
+    cardsState[index].isFlipped = true
+    setCardsState(cardsState)
+  }
+
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-      {shuffledImages.map((image, index) => {
-        return <Card key={index} image={image} />
+      {cardsState.map((cardData, index) => {
+        return (
+          <Card 
+            key={index} 
+            image={cardData.image} 
+            isFlipped={cardData.isFlipped}
+            flipCard={() => flipCard(index)}
+          />
+        )
       })}      
     </div>
   );

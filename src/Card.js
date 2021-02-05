@@ -1,14 +1,11 @@
-import { useState } from 'react'
 import reactLogo from './assets/logo.svg'
 
-function Card({ image }) {
-  const [ isFlipped, setFlipped ] = useState(false)
-
+function Card({ image, isFlipped, flipCard }) {
   const displayImg = isFlipped ? image : { src: reactLogo, alt: 'A card to flip' }
   
   return (
     <figure
-      onClick={() => setFlipped(true)}
+      onClick={() => flipCard()}
       style={{
         boxSizing: 'border-box',
         width: '160px', 

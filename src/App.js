@@ -34,7 +34,7 @@ function App() {
 
   function flipCard(index) {
     cardsState[index].isFlipped = true
-    setCardsState(cardsState)
+    setCardsState([...cardsState])
   }
 
   return (

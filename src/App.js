@@ -31,11 +31,22 @@ function App() {
   const shuffledCards = pairedCards.sort(() => Math.random() - 0.5)
 
   const [ cardsState, setCardsState ] = useState(shuffledCards)
+  const [ selectedCard, setSelectedCard ] = useState(null)
 
   function flipCard(index) {
-    const nextCardsState = cardsState.map(card => ({...card}))
-    nextCardsState[index].isFlipped = true
-    setCardsState(nextCardsState)
+    if (selectedCard === index) {
+      return
+    } else if (selectedCard ===  null) {
+      setSelectedCard(index)
+    } else if (cardsState[selectedCard].image.src === cardsState[index].image.src) {
+      const nextCardsState = cardsState.map(card => ({...card}))
+      nextCardsState[index].isFlipped = true
+      nextCardsState[selectedCard].isFlipped = true
+      setCardsState(nextCardsState)
+      setSelectedCard(null)
+    } else {
+      setSelectedCard(null)
+    }
   }
 
   return (
@@ -45,7 +56,7 @@ function App() {
           <Card 
             key={index} 
             image={cardData.image} 
-            isFlipped={cardData.isFlipped}
+            isFlipped={cardData.isFlipped || selectedCard === index}
             flipCard={() => flipCard(index)}
           />
         )

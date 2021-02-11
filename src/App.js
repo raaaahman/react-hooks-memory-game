@@ -32,8 +32,13 @@ function App() {
 
   const [ cardsState, setCardsState ] = useState(shuffledCards)
   const [ selectedCards, setSelectedCards ] = useState([])
+  const [ isLocked, setIsLocked ] = useState(false)
 
   function flipCard(index) {
+    if (isLocked) {
+      return
+    }
+
     if (selectedCards.length === 0) {
       setSelectedCards([index])
     } else {
@@ -41,12 +46,21 @@ function App() {
         return
       } else if (cardsState[selectedCards[0]].image.src === cardsState[index].image.src) {
         const nextCardsState = cardsState.map(card => ({...card}))
+
         nextCardsState[index].isFlipped = true
         nextCardsState[selectedCards[0]].isFlipped = true
+        
         setCardsState(nextCardsState)
         setSelectedCards([])
       } else {
-        setSelectedCards([])
+        setSelectedCards([selectedCards[0], index])
+        setIsLocked(true)
+
+        const lockedInterval = setInterval(() => {
+          setSelectedCards([])
+          setIsLocked(false)
+          clearInterval(lockedInterval)          
+        }, 500)
       }
     }
   }

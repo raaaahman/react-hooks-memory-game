@@ -33,8 +33,9 @@ function App() {
   const [ cardsState, setCardsState ] = useState(shuffledCards)
 
   function flipCard(index) {
-    cardsState[index].isFlipped = true
-    setCardsState([...cardsState])
+    const nextCardsState = cardsState.map(card => ({...card}))
+    nextCardsState[index].isFlipped = true
+    setCardsState(nextCardsState)
   }
 
   return (
